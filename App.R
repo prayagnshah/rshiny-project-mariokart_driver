@@ -20,14 +20,11 @@ ui <- fluidPage(
     sidebarPanel(
       
       ##sorting the filtered data using the location
-      selectInput("Location", label = "Province", choices = sort(unique(location$GEO))),
+      selectInput("GEO", label = "Province", choices = sort(unique(location$GEO))),
       
-      ##Adding the date range so that user can choose from which period businesses were closed
-      dateRangeInput('dateRange',
-                     label = 'Date range input: yyyy-mm-dd',
-                     start = Sys.Date() - 2, end = Sys.Date() + 2
-      ),
-      
+      # ##sorting the data according to the Month
+      # selectizeInput("REF_DATE", label = "Month", choices = sort(unique(location$REF_DATE, multiple = TRUE)))
+
     ),
     mainPanel(
       tabsetPanel(
@@ -48,13 +45,17 @@ ui <- fluidPage(
   )
 )
 
-
+''
 server <- function(input, output, session) {
   
-  output$dateRangeText  <- renderText({
-    paste("input$dateRange is", 
-          paste(as.character(input$dateRange), collapse = " to ")
-    )
+ 
+  
+  ##Table output and rendering to print the filtered values 
+    output$table <- renderDataTable({
+      
+    ##We are subsetting the values based on location and giving it back to loading_data_filter
+    loading_data_filter <- subset(location, location$Industry == input$GEO)
+    
   })
   
 }
