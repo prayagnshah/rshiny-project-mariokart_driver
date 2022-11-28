@@ -1,66 +1,78 @@
 library(shiny)
-library(sf)
-library(leaflet)
+library(ggplot2)
+
+##Loading the data
+mario <- read.csv("data/characters.csv")
+head(mario)
 
 
-location <- read.csv("data/loading-data.csv")
-head(location)
-tail(location)
 
+characters <- mario$Character
+var <- mario$Character[order(mario$Class)]
+print(var)
+
+##printing only coloumns and it will be used as the user input
+column_names = colnames(mario)
+print(column_names)
 
 ui <- fluidPage(
   
-  ##Title of the application 
-  titlePanel("Number of businesses closed during the Covid"),
+  ##Title of the application
+  titlePanel("Welcome to MarioKart Drivers"),
   
+  ##Trying to make more pleasing using the themes
+  theme = bslib::bs_theme(bootswatch = "yeti", version = 5),
   
   sidebarLayout(
     
-    #Menu
+    #Menu panel 
+    
     sidebarPanel(
       
-      ##sorting the filtered data using the location
-      selectInput("GEO", label = "Province", choices = sort(unique(location$GEO))),
+      ##sorting the filtered data into alphabetical order 
       
-      # ##sorting the data according to the Month
-      # selectizeInput("REF_DATE", label = "Month", choices = sort(unique(location$REF_DATE, multiple = TRUE)))
-
+      selectInput("variable_speed", label = "Choose any speed value", choices = column_names),
     ),
-    mainPanel(
+    
+    ##Mainpanel for the outputs
+    mainPanel (
       tabsetPanel(
-        
-        #Panel1, output will be shown in Table format
+      
+        ##Panel 1
         tabPanel(
-          "Table",
+          "Map-Visualization",
           dataTableOutput("table")
-        ),
-        
-        #Panel 2, output will be in map format
-        tabPanel(
-          "Map", 
-          leafletOutput("map", width = "100%")
         )
       )
-    )
+    ) 
+      
+     
   )
+  
 )
 
-''
-server <- function(input, output, session) {
+
+##Server side 
+
+
+server <- function(input, output, session) { 
   
- 
-  
-  ##Table output and rendering to print the filtered values 
-    output$table <- renderDataTable({
-      
-    ##We are subsetting the values based on location and giving it back to loading_data_filter
-    loading_data_filter <- subset(location, location$Industry == input$GEO)
+  output$table <- renderDataTable({
     
-  })
+    ##Sorting the value of Character and Class according to their index value using factor function
+    ##Sorting both of them at the same time
+    characters_only <- factor(
+      mario$Character, levels = mario$Character[order(mario$Class)],
+    
+      
+     
   
+    )
+    
+    
+ } )
 }
 
 
-
 ##Call to shiny
-shinyApp(ui, server)
+shinyApp(ui, server) 
