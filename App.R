@@ -1,6 +1,7 @@
 library(shiny)
 library(ggplot2)
 
+
 ##Loading the data
 mario <- read.csv("data/characters.csv")
 head(mario)
@@ -13,7 +14,13 @@ print(var)
 
 ##printing only coloumns and it will be used as the user input
 column_names = colnames(mario)
-print(column_names)
+
+##filtering the first two coloumns to get the properdata
+filter_coloumns <- column_names[! column_names %in% c("Character", "Class")]
+print(filter_coloumns)
+
+
+
 
 ui <- fluidPage(
   
@@ -31,17 +38,18 @@ ui <- fluidPage(
       
       ##sorting the filtered data into alphabetical order 
       
-      selectInput("variable_speed", label = "Choose any speed value", choices = column_names),
+      selectInput("variable_speed", label = "Choose any speed value", choices = filter_coloumns),
     ),
     
     ##Mainpanel for the outputs
+    
     mainPanel (
       tabsetPanel(
       
         ##Panel 1
         tabPanel(
           "Map-Visualization",
-          dataTableOutput("table")
+          plotOutput("table")
         )
       )
     ) 
@@ -52,25 +60,25 @@ ui <- fluidPage(
 )
 
 
+
+
 ##Server side 
 
 
 server <- function(input, output, session) { 
   
-  output$table <- renderDataTable({
-    
-    ##Sorting the value of Character and Class according to their index value using factor function
-    ##Sorting both of them at the same time
-    characters_only <- factor(
-      mario$Character, levels = mario$Character[order(mario$Class)],
-    
-      
-     
-  
-    )
+  output$table <- renderPlot({
     
     
- } )
+    ##Using ggplot to make the interactive graph and using geom_point to have the point shape structure 
+    ggplot(data=mario, aes_string(x='Character', y=input$variable_speed, fill="Class", color = "Class")) +
+
+      geom_point(size = 4) + 
+      labs(x='Character', y = input$variable_speed) + coord_flip() +
+      theme_minimal()
+    
+    
+ })
 }
 
 
