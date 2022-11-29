@@ -1,14 +1,14 @@
 # Rshiny project - Mario Kart 8 driver
 
-(Link for shiny application is )[https://prayagnshah.shinyapps.io/rshiny-project-mariokart_driver/?_ga=2.221309916.550610817.1669733090-1781393509.1669301759]
+https://prayagnshah.shinyapps.io/rshiny-project-mariokart_driver/?_ga=2.221309916.550610817.1669733090-1781393509.1669301759 - Link for the shiny application where we can see visualization
 
 # Deployment:
 - [Shiny Server](https://www.shinyapps.io/) - Back end software that builds a web server for shiny apps
 
 ## Packages:
 
-* Shiny *
-* ggplot2 *
+* Shiny
+* ggplot2
 
 # Explanation:
 
@@ -18,4 +18,4 @@ We can predict using this data saying which player will be better for winning th
 
 # Dataset taken from:
 
-[https://www.kaggle.com/datasets/barelydedicated/mariokart8?resource=download&select=characters.csv]
+https://www.kaggle.com/datasets/barelydedicated/mariokart8?resource=download&select=characters.csv
