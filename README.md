@@ -5,7 +5,7 @@ https://prayagnshah.shinyapps.io/rshiny-project-mariokart_driver/?_ga=2.22130991
 # Deployment:
 - [Shiny Server](https://www.shinyapps.io/) - Back end software that builds a web server for shiny apps
 
-## Packages:
+# Packages:
 
 * Shiny
 * ggplot2
